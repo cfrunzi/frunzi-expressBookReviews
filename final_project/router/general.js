@@ -58,16 +58,25 @@ public_users.get('/isbn/:isbn', function (req, res) {
     });
 });
   
-// Task 3
+// Task 3 + 12
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
+    const bookAuthor = req.params.author;
+    getBookList()
+    .then((bookEntries) => Object.values(bookEntries))
+    .then((bookList) => bookList.filter((book) => book.author === bookAuthor))
+    .then((filterBookList) => res.send(filterBookList));
 
 });
 
+// Task 4 + 13
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const bookTitle = req.params.title;
+    getBookList()
+    .then((bookEntry) => Object.values(bookEntry))
+    .then((bookList) => bookList.filter((book) => book.title === bookTitle))
+    .then((filteredList) => res.send(filteredList));
 });
 
 //  Get book review
