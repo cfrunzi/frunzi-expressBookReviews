@@ -8,12 +8,20 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
+app.use("/customer",session({
+    secret:"fingerprint_customer",
+    resave: true, 
+    saveUninitialized: true, 
+    cookie: {
+        maxAge: 30 * 60 * 1000,
+        httpOnly: true
+    }
+}));
 
 app.use("/customer/auth/*", function auth(req,res,next){
-    //Write the authenication mechanism here
+    //Write the authentication mechanism here
     if (req.session.authorization){
-        let token = req.session.authorization['accessToken']
+        let token = req.session.authorization.accessToken;
 
         jwt.verify(token, "access", (err, user) => {
             if (!err){
