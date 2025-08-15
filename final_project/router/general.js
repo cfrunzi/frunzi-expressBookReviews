@@ -70,7 +70,7 @@ public_users.get('/author/:author',function (req, res) {
 });
 
 // Task 4 + 13
-// Get all books based on title
+// Get all books based on title using book list promise
 public_users.get('/title/:title',function (req, res) {
     const bookTitle = req.params.title;
     getBookList()
@@ -79,10 +79,14 @@ public_users.get('/title/:title',function (req, res) {
     .then((filteredList) => res.send(filteredList));
 });
 
-//  Get book review
+// Task 5
+//  Get book review by isbn number
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const isbnNumber = req.params.isbn;
+    getISBN(isbnNumber)
+    .then(result => res.send(result.reviews),
+        err => res.status(err.status).json({message: err.message})
+    );
 });
 
 module.exports.general = public_users;
