@@ -2,3 +2,6 @@
 node_modules
 
 cookies.txt
+
+router/package-lock.json
+router/package.json
