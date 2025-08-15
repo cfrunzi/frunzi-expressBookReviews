@@ -37,10 +37,37 @@ regd_users.post("/login", (req,res) => {
     }
 });
 
+// Task 8
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const isbnNumber = req.params.isbn;
+
+    const bookReview = req.body.review;
+    const username = req.session.authorization.username;
+
+    // check if ISBN number exists in the book list and update review, otherwise return 404
+    if (books[isbn]){
+        let book = books[isbn];
+        book.reviews[username] = bookReview;
+        return res.status(200).send({"message": "Review successfully posted"});
+    } else {
+        return res.status(404).send({"message": `ISBN ${isbnNumber} not found`});
+    }
+
+});
+
+// Task 9
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const isbnNumber = req.params.isbn;
+    const username = req.session.authorization.username;
+
+    if (books[isbn]){
+        let book = books[isbn];
+        delete book.reviews[username];
+        return res.status(201).send("Review successfully deleted");
+    } else {
+        return res.status(404).send({"message": `ISBN ${isbnNumber} not found`});
+    }
 });
 
 module.exports.authenticated = regd_users;
