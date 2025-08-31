@@ -14,7 +14,7 @@ public_users.post("/register", (req,res) => {
     } 
 
     // next, confirm if the username already exists
-    if (users.find((user) => user.username === username)) {
+    if (isValid(username)) {
         return res.status(409).json({"message": "The username provided already is registered."})
     }
 
@@ -35,27 +35,23 @@ const getBookList = () => {
 // Get the book list available in the shop
 // Task 1
 public_users.get('/', async function (req, res) {
-  try{
+    try {
     const books = await getBookList();
-    res.json(books);
-  } 
-  catch(e){
+    return res.json(books);
+  } catch (e) {
     console.error(e);
-    res.status(500).json({message: "Error retrieving the book list"})
+    return res.status(500).json({ message: "Error retrieving the book list" });
   }
-  res.send(JSON.stringify(books, null, 2));
 });
 
 // Task 11
 // retrieve ISBN details based on Promise Callback
 const getISBN = (isbn) => {
     return new Promise((resolve, reject) => {
-        let parsedISBN = parseInt(isbn);
-
-        if(books[parsedISBN]){
-            resolve(books[parsedISBN]);
+        if(books[isbn]){
+            resolve(books[isbn]);
         } else{
-            reject({status: 404, message: `ISBN ${parsedISBN} not found`});
+            reject({status: 404, message: `ISBN ${isbn} not found`});
         }
     });
 };
